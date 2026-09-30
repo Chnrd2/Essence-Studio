@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <title>Essence Studio · Turnos</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        --bg: #f2f2ef;
+        --cd: #fff;
+        --ink: #0c0e10;
+        --mu: #62676c;
+        --ln: #d8dadb;
+        --g: #2a7a48;
+        --gt: #fff;
+        --bz: #d3d6d8;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0a0c0e;
+          --cd: #14171a;
+          --ink: #f1f2f0;
+          --mu: #9ba1a6;
+          --ln: #262a2e;
+          --g: #3fae6a;
+          --gt: #04110a;
+          --bz: #2a3035;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0a0c0e;
+        --cd: #14171a;
+        --ink: #f1f2f0;
+        --mu: #9ba1a6;
+        --ln: #262a2e;
+        --g: #3fae6a;
+        --gt: #04110a;
+        --bz: #2a3035;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          400 15px/1.45 Outfit,
+          system-ui,
+          sans-serif;
+      }
+      header {
+        background: #0b0d0f;
+        color: #f1f2f0;
+      }
+      .in {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .lg {
+        width: 40px;
+        height: 40px;
+        background: #f1f2f0;
+        color: #0b0d0f;
+        font-weight: 800;
+        font-size: 22px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        position: relative;
+      }
+      .lg i {
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+        width: 7px;
+        height: 7px;
+        background: #2a7a48;
+        border-radius: 50%;
+      }
+      header b {
+        letter-spacing: 0.2em;
+        font-weight: 800;
+        display: block;
+      }
+      header small {
+        color: #9ba1a6;
+      }
+      nav {
+        margin-left: auto;
+        display: flex;
+        gap: 6px;
+      }
+      .tb {
+        background: none;
+        border: 1px solid #3a3f44;
+        color: #f1f2f0;
+        border-radius: 8px;
+        padding: 8px 14px;
+        font: inherit;
+        cursor: pointer;
+      }
+      .tb.on {
+        background: #2a7a48;
+        border-color: #2a7a48;
+      }
+      .str {
+        height: 8px;
+        background: repeating-linear-gradient(
+          90deg,
+          #f1f2f0 0 12px,
+          #0b0d0f 12px 24px
+        );
+      }
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      h1 {
+        font-size: clamp(28px, 6vw, 42px);
+        font-weight: 800;
+        line-height: 1.05;
+        margin: 6px 0 4px;
+        border-left: 6px solid var(--g);
+        padding-left: 12px;
+      }
+      #st {
+        color: var(--mu);
+        font-size: 12px;
+        margin: 0 0 16px 18px;
+      }
+      .c {
+        background: var(--cd);
+        border: 1px solid var(--ln);
+        border-radius: 14px;
+        padding: 16px;
+        margin: 0 0 14px;
+      }
+      h2 {
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--mu);
+        margin: 0 0 10px;
+        font-weight: 600;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        border: 1px solid var(--ln);
+        background: transparent;
+        color: var(--ink);
+        padding: 10px 14px;
+        border-radius: 10px;
+        font: inherit;
+        cursor: pointer;
+        text-align: left;
+      }
+      .chip.on {
+        background: var(--g);
+        border-color: var(--g);
+        color: var(--gt);
+      }
+      .chip:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+      .sm {
+        padding: 5px 10px;
+      }
+      .wb {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .gw {
+        overflow-x: auto;
+      }
+      .g {
+        display: grid;
+        grid-template-columns: 46px repeat(7, minmax(66px, 1fr));
+        gap: 3px;
+        min-width: 560px;
+      }
+      .g > * {
+        font-size: 12px;
+        border-radius: 6px;
+        min-height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border: 0;
+        font-family: inherit;
+        padding: 2px;
+      }
+      .h {
+        color: var(--mu);
+        font-weight: 600;
+      }
+      .f {
+        border: 1px solid var(--g);
+        background: transparent;
+        color: var(--ink);
+        cursor: pointer;
+      }
+      .f:hover,
+      .f.on {
+        background: var(--g);
+        color: var(--gt);
+      }
+      .t {
+        background: repeating-linear-gradient(
+          135deg,
+          var(--bz) 0 5px,
+          transparent 5px 10px
+        );
+        color: var(--mu);
+      }
+      button.t {
+        cursor: pointer;
+        color: var(--ink);
+        font-weight: 600;
+      }
+      button.t.on {
+        outline: 2px solid var(--g);
+      }
+      .o {
+        opacity: 0.2;
+        background: var(--bz);
+      }
+      .e {
+        border: 1px dashed var(--ln);
+      }
+      input,
+      select {
+        font: inherit;
+        padding: 9px 10px;
+        border: 1px solid var(--ln);
+        border-radius: 8px;
+        background: var(--bg);
+        color: var(--ink);
+        width: 100%;
+        min-width: 0;
+      }
+      .row input {
+        flex: 1 1 200px;
+      }
+      .ed {
+        display: grid;
+        grid-template-columns: 1fr 92px 64px 42px;
+        gap: 6px;
+        margin-bottom: 6px;
+      }
+      .hd span,
+      .hd2 span {
+        font-size: 11px;
+        color: var(--mu);
+      }
+      .hd2 {
+        display: grid;
+        grid-template-columns: 1fr 98px 98px 42px;
+        gap: 6px;
+      }
+      .ed2 {
+        border-top: 1px solid var(--ln);
+        padding: 10px 0;
+        display: grid;
+        grid-template-columns: 1fr 98px 98px 42px;
+        gap: 6px;
+        margin-bottom: 4px;
+      }
+      .ed2 .row {
+        grid-column: 1/-1;
+      }
+      .ok {
+        border-color: var(--g);
+      }
+      .big {
+        font-size: 18px;
+      }
+      .er {
+        color: #d04a3a;
+      }
+      .mu {
+        color: var(--mu);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="in">
+        <div class="lg">E<i></i></div>
+        <div><b>ESSENCE STUDIO</b><small>Barbería · Mar del Plata</small></div>
+        <nav id="nav"></nav>
+      </div>
+    </header>
+    <div class="str"></div>
+    <main>
+      <h1>Reservá tu turno</h1>
+      <p id="st"></p>
+      <div id="app"></div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SB_URL = "https://TU-PROYECTO.supabase.co",
+        SB_KEY = "TU-CLAVE-PUBLICA";
+      const q = (i) => document.getElementById(i),
+        clone = (x) => JSON.parse(JSON.stringify(x)),
+        uid = () => Math.random().toString(36).slice(2, 8);
+      const E = (s) =>
+        String(s == null ? "" : s).replace(
+          /[&<>"']/g,
+          (c) => "&#" + c.charCodeAt(0) + ";",
+        );
+      const fm = (n) => "$" + Number(n).toLocaleString("es-AR");
+      const M = (t) => {
+        const a = t.split(":");
+        return +a[0] * 60 + +a[1];
+      };
+      const T = (m) =>
+        String((m / 60) | 0).padStart(2, "0") +
+        ":" +
+        String(m % 60).padStart(2, "0");
+      const ds = (x) =>
+        x.getFullYear() +
+        "-" +
+        String(x.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(x.getDate()).padStart(2, "0");
+      const fd = (d) =>
+        new Date(d + "T12:00").toLocaleDateString("es-AR", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+        });
+      const D = {
+        ver: 2,
+        services: [
+          { id: "s1", n: "Corte", p: 10000, m: 60 },
+          { id: "s2", n: "Corte y Barba", p: 14000, m: 60 },
+        ],
+        barbers: [
+          {
+            id: "a",
+            n: "Agustín Carrillo",
+            f: "10:00",
+            t: "19:00",
+            d: [1, 2, 3, 4, 5, 6],
+          },
+          {
+            id: "f",
+            n: "Fabián Delagnola",
+            f: "10:00",
+            t: "19:00",
+            d: [1, 2, 3, 4, 5, 6],
+          },
+        ],
+      };
+      const ST = 60,
+        hs = (v) => {
+          let o = "";
+          for (let h = 6; h <= 23; h++) {
+            const t = T(h * 60);
+            o += `<option${t === v ? " selected" : ""}>${t}</option>`;
+          }
+          return o;
+        };
+      const S = {
+        c: clone(D),
+        bk: [],
+        v: "r",
+        wk: 0,
+        b: null,
+        s: null,
+        p: null,
+        f: { n: "", w: "" },
+        ok: null,
+        er: "",
+        adm: false,
+        ge: "",
+        em: null,
+        cx: null,
+      };
+      let tm;
+      const B = () => S.c.barbers.find((x) => x.id === S.b) || S.c.barbers[0],
+        V = () => S.c.services.find((x) => x.id === S.s);
+      function st(b, d, m, l) {
+        const w = new Date(d + "T12:00").getDay();
+        if (
+          !b.d.includes(w) ||
+          m < M(b.f) ||
+          m + l > M(b.t) ||
+          new Date(d + "T" + T(m)) < new Date()
+        )
+          return "o";
+        return S.bk.some(
+          (k) => k.b === b.id && k.d === d && m < k.m + k.l && k.m < m + l,
+        )
+          ? "t"
+          : "f";
+      }
+      const wkd = () => {
+        const n = new Date();
+        n.setHours(12, 0, 0, 0);
+        n.setDate(n.getDate() - ((n.getDay() + 6) % 7) + S.wk * 7);
+        return [...Array(7)].map((_, i) => {
+          const x = new Date(n);
+          x.setDate(n.getDate() + i);
+          return x;
+        });
+      };
+      const wkbar = () => {
+        const w = wkd(),
+          f = (x) =>
+            x.toLocaleDateString("es-AR", { day: "numeric", month: "short" });
+        return `<div class="wb"><button class="chip" data-a="wk" data-i="-1"${S.wk < 1 ? " disabled" : ""}>←</button><b>${f(w[0])} – ${f(w[6])}</b><button class="chip" data-a="wk" data-i="1">→</button></div>`;
+      };
+      function grid(ad) {
+        const b = B();
+        if (!b) return "";
+        const l = ad ? ST : V() ? V().m : ST,
+          ws = wkd();
+        let h =
+          '<div class="gw"><div class="g"><i></i>' +
+          ws
+            .map(
+              (x) =>
+                `<div class="h">${x.toLocaleDateString("es-AR", { weekday: "short", day: "numeric" })}</div>`,
+            )
+            .join("");
+        for (let m = M(b.f); m < M(b.t); m += ST) {
+          h += `<div class="h">${T(m)}</div>`;
+          for (const x of ws) {
+            const d = ds(x),
+              s = st(b, d, m, l);
+            if (ad) {
+              const k = S.bk.find(
+                (k) =>
+                  k.b === b.id && k.d === d && m < k.m + k.l && k.m < m + ST,
+              );
+              h += k
+                ? `<button class="t${S.cx === k.id ? " on" : ""}" data-a="pk" data-i="${E(k.id)}">${k.m >= m ? E(k.n.split(" ")[0]) : "·"}</button>`
+                : `<div class="${s === "o" ? "o" : "e"}"></div>`;
+            } else
+              h +=
+                s === "f"
+                  ? `<button class="f${S.p && S.p.d === d && S.p.m === m ? " on" : ""}" data-a="sl" data-d="${d}" data-m="${m}">Libre</button>`
+                  : `<div class="${s}">${s === "t" ? "Ocupado" : ""}</div>`;
+          }
+        }
+        return h + "</div></div>";
+      }
+      const bb = () =>
+        `<div class="row">${S.c.barbers.map((x) => `<button class="chip${B() && x.id === B().id ? " on" : ""}" data-a="bb" data-i="${E(x.id)}">${E(x.n)}</button>`).join("")}</div>`;
+      function rv() {
+        const b = B(),
+          v = V();
+        if (S.ok)
+          return `<div class="c ok"><h2>Turno confirmado</h2><p class="big">${S.ok}</p><button class="chip on" data-a="nw">Reservar otro turno</button></div>`;
+        return `<div class="c"><h2>1 · Barbero</h2>${bb()}</div>
+<div class="c"><h2>2 · Servicio</h2><div class="row">${S.c.services.map((x) => `<button class="chip${x.id === S.s ? " on" : ""}" data-a="ss" data-i="${E(x.id)}"><b>${E(x.n)}</b><br><small>${x.m} min · ${fm(x.p)}</small></button>`).join("")}</div></div>
+<div class="c"><h2>3 · Día y horario</h2>${v ? wkbar() + grid(0) : '<p class="mu">Elegí un servicio para ver los horarios disponibles.</p>'}</div>
+${S.p && v && b ? `<div class="c"><h2>4 · Tus datos</h2><p><b>${E(b.n)}</b> · ${E(v.n)} · ${fd(S.p.d)}, ${T(S.p.m)} hs · ${fm(v.p)}</p><div class="row"><input data-k="n" placeholder="Nombre y apellido" value="${E(S.f.n)}"><input data-k="w" inputmode="tel" placeholder="WhatsApp" value="${E(S.f.w)}"></div>${S.er ? `<p class="er">${E(S.er)}</p>` : ""}<p><button class="chip on" data-a="go">Confirmar turno</button></p></div>` : ""}`;
+      }
+      function gv() {
+        const k = S.bk.find((x) => x.id === S.cx);
+        return `<p class="mu">${E(S.em || "")} · <button class="chip sm" data-a="out">Salir</button></p>${S.ge ? `<p class="er">${E(S.ge)}</p>` : ""}<div class="c"><h2>Servicios · precio y duración</h2><div class="ed hd"><span>Servicio</span><span>Precio $</span><span>Min</span><span></span></div>
+${S.c.services.map((x, i) => `<div class="ed"><input data-f="services.${i}.n" value="${E(x.n)}"><input type="number" data-f="services.${i}.p" value="${x.p}" step="500"><input type="number" data-f="services.${i}.m" value="${x.m}" step="15" min="15"><button class="chip" data-a="ds" data-i="${i}">✕</button></div>`).join("")}
+<button class="chip" data-a="as">+ Servicio</button></div>
+<div class="c"><h2>Barberos · horarios y días</h2><div class="hd2"><span>Barbero</span><span>Desde</span><span>Hasta</span><span></span></div>${S.c.barbers.map((x, i) => `<div class="ed2"><input data-f="barbers.${i}.n" value="${E(x.n)}"><select data-f="barbers.${i}.f">${hs(x.f)}</select><select data-f="barbers.${i}.t">${hs(x.t)}</select><button class="chip" data-a="db" data-i="${i}">✕</button><div class="row">${["D", "L", "M", "M", "J", "V", "S"].map((l, w) => `<button class="chip sm${x.d.includes(w) ? " on" : ""}" data-a="dy" data-i="${i}" data-w="${w}">${l}</button>`).join("")}</div></div>`).join("")}
+<button class="chip" data-a="ab">+ Barbero</button></div>
+<div class="c"><h2>Agenda de la semana</h2>${bb()}<br>${wkbar()}${grid(1)}${k ? `<p><b>${E(k.n)}</b> · ${E(k.sn)} · ${T(k.m)} hs · WhatsApp ${E(k.w)} <button class="chip" data-a="cancel">Cancelar turno</button></p>` : '<p class="mu">Tocá un turno ocupado para ver los datos o cancelarlo.</p>'}</div>`;
+      }
+      function render() {
+        if (!S.b && S.c.barbers[0]) S.b = S.c.barbers[0].id;
+        q("nav").innerHTML =
+          `<button class="tb${S.v === "r" ? " on" : ""}" data-a="tab" data-i="r">Reservar</button>` +
+          (S.adm || S.v === "g"
+            ? `<button class="tb${S.v === "g" ? " on" : ""}" data-a="tab" data-i="g">Gestión</button>`
+            : "");
+        q("st").textContent = "";
+        q("app").innerHTML = S.v === "g" ? (S.adm ? gv() : lg()) : rv();
+      }
+      const rs = () =>
+        document.activeElement && document.activeElement.tagName === "INPUT"
+          ? setTimeout(rs, 1500)
+          : render();
+      function saveC() {
+        clearTimeout(tm);
+        tm = setTimeout(async () => {
+          const r = await sb.from("config").upsert({ id: 1, data: S.c });
+          S.ge = r.error
+            ? "No se pudieron guardar los cambios (" + r.error.message + ")"
+            : "";
+          rs();
+        }, 400);
+      }
+      async function addBk(k) {
+        const r = await sb.rpc("book", {
+          p_barber: k.b,
+          p_day: k.d,
+          p_start: k.m,
+          p_len: k.l,
+          p_service: k.sn,
+          p_price: k.pr,
+          p_name: k.n,
+          p_phone: k.w,
+        });
+        if (r.error) throw { code: r.error.code === "23P01" ? "taken" : "err" };
+        await load();
+      }
+      async function cancel(id) {
+        await sb.from("bookings").delete().eq("id", id);
+        await load();
+      }
+      async function book() {
+        const b = B(),
+          v = V(),
+          d = S.p.d,
+          m = S.p.m,
+          n = S.f.n.trim(),
+          w = S.f.w.trim();
+        if (n.length < 2 || w.length < 6) {
+          S.er = "Completá tu nombre y un WhatsApp de contacto.";
+          return render();
+        }
+        if (st(b, d, m, v.m) !== "f") {
+          S.er = "Ese horario se acaba de ocupar. Elegí otro.";
+          S.p = null;
+          return render();
+        }
+        try {
+          await addBk({
+            b: b.id,
+            bn: b.n,
+            sn: v.n,
+            pr: v.p,
+            d,
+            m,
+            l: v.m,
+            n,
+            w,
+          });
+          S.ok = `${E(n)}, te esperamos el ${fd(d)} a las ${T(m)} hs con ${E(b.n)} (${E(v.n)}, ${fm(v.p)}).`;
+          S.p = null;
+        } catch (x) {
+          S.er =
+            x.code === "taken"
+              ? "Ese horario se acaba de ocupar. Elegí otro."
+              : "No se pudo guardar el turno desde este acceso. Probá de nuevo o contactá al local.";
+        }
+        render();
+      }
+      document.addEventListener("click", async (e) => {
+        const t = e.target.closest("[data-a]");
+        if (!t) return;
+        const a = t.dataset.a,
+          i = t.dataset.i;
+        if (a === "tab") {
+          S.v = i;
+          S.cx = null;
+        } else if (a === "bb") {
+          S.b = i;
+          S.p = null;
+          S.cx = null;
+        } else if (a === "ss") {
+          S.s = i;
+          S.p = null;
+        } else if (a === "sl") {
+          S.p = { d: t.dataset.d, m: +t.dataset.m };
+          S.er = "";
+        } else if (a === "wk") {
+          S.wk = Math.max(0, S.wk + +i);
+          S.p = null;
+          S.cx = null;
+        } else if (a === "nw") {
+          S.ok = null;
+        } else if (a === "pk") {
+          S.cx = i;
+        } else if (a === "cancel") {
+          await cancel(S.cx);
+          S.cx = null;
+        } else if (a === "go") {
+          await book();
+          return;
+        } else if (a === "as") {
+          S.c.services.push({ id: uid(), n: "Nuevo servicio", p: 0, m: 60 });
+          saveC();
+        } else if (a === "ds") {
+          S.c.services.splice(+i, 1);
+          saveC();
+        } else if (a === "ab") {
+          S.c.barbers.push({
+            id: uid(),
+            n: "Nuevo barbero",
+            f: "10:00",
+            t: "19:00",
+            d: [1, 2, 3, 4, 5, 6],
+          });
+          saveC();
+        } else if (a === "db") {
+          S.c.barbers.splice(+i, 1);
+          saveC();
+        } else if (a === "dy") {
+          const d = S.c.barbers[+i].d,
+            w = +t.dataset.w;
+          d.includes(w) ? d.splice(d.indexOf(w), 1) : d.push(w);
+          saveC();
+        } else if (a === "in") {
+          const r = await sb.auth.signInWithOtp({
+            email: (S.f.em || "").trim(),
+            options: { emailRedirectTo: location.origin + location.pathname },
+          });
+          S.ge = r.error
+            ? "No se pudo enviar el link: " + r.error.message
+            : "Listo: revisá tu mail y abrí el link para entrar.";
+        } else if (a === "out") {
+          await sb.auth.signOut();
+          S.ge = "";
+        }
+        render();
+      });
+      document.addEventListener("change", (e) => {
+        const f = e.target.dataset.f;
+        if (!f) return;
+        const p = f.split(".");
+        let o = S.c;
+        for (let i = 0; i < p.length - 1; i++) o = o[p[i]];
+        let v = e.target.value;
+        if (e.target.type === "number") v = Math.max(0, +v || 0);
+        o[p[p.length - 1]] = v;
+        saveC();
+        render();
+      });
+      document.addEventListener("input", (e) => {
+        const k = e.target.dataset.k;
+        if (k) S.f[k] = e.target.value;
+      });
+      render();
+      const lg = () =>
+        `<div class="c"><h2>Acceso de gestión</h2>${S.em ? `<p>La cuenta <b>${E(S.em)}</b> no tiene acceso de gestión.</p><button class="chip" data-a="out">Cerrar sesión</button>` : `<p class="mu">Ingresá con tu mail de dueño y te enviamos un link para entrar.</p><div class="row"><input data-k="em" type="email" placeholder="tu@mail.com"><button class="chip on" data-a="in">Enviarme el link</button></div>`}${S.ge ? `<p>${E(S.ge)}</p>` : ""}</div>`;
+      const sb = supabase.createClient(SB_URL, SB_KEY);
+      async function load() {
+        const c = await sb
+          .from("config")
+          .select("data")
+          .eq("id", 1)
+          .maybeSingle();
+        if (c.data && c.data.data.ver >= 2) S.c = clone(c.data.data);
+        const r = await sb.from(S.adm ? "bookings" : "busy").select("*");
+        if (r.data)
+          S.bk = r.data.map((x) => ({
+            id: x.id,
+            b: x.barber_id,
+            d: x.day,
+            m: x.start_min,
+            l: x.len,
+            sn: x.service,
+            n: x.name || "",
+            w: x.phone || "",
+          }));
+        rs();
+      }
+      async function who() {
+        const r = await sb.auth.getSession(),
+          u = r.data.session && r.data.session.user;
+        S.em = u ? u.email : null;
+        S.adm = u ? (await sb.rpc("is_admin")).data === true : false;
+        await load();
+      }
+      if (
+        location.hostname.startsWith("gestion.") ||
+        location.hash === "#gestion"
+      )
+        S.v = "g";
+      sb.auth.onAuthStateChange(() => setTimeout(who, 0));
+      who();
+      setInterval(load, 30000);
+      render();
+    </script>
+  </body>
+</html>
